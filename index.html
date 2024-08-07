@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון הנחות</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #007BFF;
+            border-radius: 4px;
+            color: #333;
+            background-color: #fff;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+        .summary {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FF5733; /* צבע מודגש לכפתור */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e04b2e;
+        }
+        .highlight {
+            color: #FF5733; /* צבע מודגש */
+        }
+        .help {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>מחשבון הנחות</h1>
+    <div class="form-group">
+        <label for="originalPrice">מחיר מקורי:</label>
+        <input type="number" id="originalPrice" placeholder="הכנס את המחיר המקורי">
+    </div>
+    <div class="form-group">
+        <label for="discount" class="highlight">הנחה באחוזים:</label>
+        <input type="number" id="discount" placeholder="הכנס את אחוז ההנחה">
+    </div>
+    <div class="form-group">
+        <label for="finalPrice">מחיר סופי:</label>
+        <input type="number" id="finalPrice" placeholder="הכנס את המחיר הסופי">
+    </div>
+    <button onclick="calculateDiscount()">חישוב הנחה באחוזים</button>
+    <button onclick="calculatePercentage()">חשב אחוז הנחה</button>
+    <button onclick="clearFields()">ניקוי</button>
+    <div class="result" id="result"></div>
+    <div class="summary" id="summary"></div>
+    <div class="help">
+        <h2>עזרה</h2>
+        <p>להשתמש במחשבון:</p>
+        <ul>
+            <li>הזן את המחיר המקורי ואת אחוז ההנחה כדי לחשב את המחיר הסופי.</li>
+            <li>הזן את המחיר המקורי ואת המחיר הסופי כדי לחשב את אחוז ההנחה.</li>
+            <li>לחץ על הכפתור המתאים לאחר ההזנה.</li>
+        </ul>
+        <p>כדי לשמור את היישום בעמוד הבית בנייד:</p>
+        <ul>
+            <li>במכשירי iOS (אייפון/אייפד): לחץ על כפתור השיתוף ובחר באפשרות "הוסף למסך הבית".</li>
+            <li>במכשירי אנדרואיד: לחץ על תפריט הדפדפן (שלוש נקודות בפינה העליונה) ובחר "הוסף למסך הבית".</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function calculateDiscount() {
+        const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+        const discount = parseFloat(document.getElementById('discount').value);
+        const finalPrice = originalPrice - (originalPrice * (discount / 100));
+        const discountAmount = originalPrice * (discount / 100);
+        
+        document.getElementById('result').innerText = 'המחיר הסופי לאחר הנחה: ' + finalPrice.toFixed(2) + ' ש"ח';
+        document.getElementById('summary').innerHTML = `
+            <p>מחיר מקורי: ${originalPrice.toFixed(2)} ש"ח</p>
+            <p>אחוז הנחה: ${discount.toFixed(2)}%</p>
+            <p>מחיר סופי: ${finalPrice.toFixed(2)} ש"ח</p>
+            <p>סכום ההנחה: ${discountAmount.toFixed(2)} ש"ח</p>
+        `;
+    }
+
+    function calculatePercentage() {
+        const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+        const finalPrice = parseFloat(document.getElementById('finalPrice').value);
+        const discountPercentage = ((originalPrice - finalPrice) / originalPrice) * 100;
+        const discountAmount = originalPrice - finalPrice;
+        
+        document.getElementById('result').innerText = 'אחוז ההנחה הוא: ' + discountPercentage.toFixed(2) + '%';
+        document.getElementById('summary').innerHTML = `
+            <p>מחיר מקורי: ${originalPrice.toFixed(2)} ש"ח</p>
+            <p>אחוז הנחה: ${discountPercentage.toFixed(2)}%</p>
+            <p>מחיר סופי: ${finalPrice.toFixed(2)} ש"ח</p>
+            <p>סכום ההנחה: ${discountAmount.toFixed(2)} ש"ח</p>
+        `;
+    }
+
+    function clearFields() {
+        document.getElementById('originalPrice').value = '';
+        document.getElementById('discount').value = '';
+        document.getElementById('finalPrice').value = '';
+        document.getElementById('result').innerText = '';
+        document.getElementById('summary').innerHTML = '';
+    }
+</script>
+
+</body>
+</html>
